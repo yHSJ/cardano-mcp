@@ -1,3 +1,4 @@
+pub mod get_network;
 pub mod get_tip;
 
 use serde_json::Value;
@@ -22,7 +23,7 @@ pub struct ToolRegistry {
 
 impl ToolRegistry {
     pub fn new() -> Self {
-        let tools = vec![get_tip::definition()];
+        let tools = vec![get_network::definition(), get_tip::definition()];
 
         Self { tools }
     }
@@ -38,6 +39,7 @@ impl ToolRegistry {
         node_client: Arc<NodeClient>,
     ) -> Result<CallToolResult, ToolError> {
         match name {
+            get_network::NAME => get_network::execute(arguments, node_client).await,
             get_tip::NAME => get_tip::execute(arguments, node_client).await,
             _ => Err(ToolError::NotFound(name.to_string())),
         }

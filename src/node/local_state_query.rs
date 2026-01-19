@@ -109,4 +109,17 @@ impl NodeClient {
     pub fn is_configured(&self) -> bool {
         self.socket_path.is_some()
     }
+
+    pub fn network_magic(&self) -> u64 {
+        self.network_magic
+    }
+
+    pub fn network_name(&self) -> &'static str {
+        match self.network_magic {
+            764824073 => "mainnet",
+            1 => "preprod",
+            2 => "preview",
+            _ => "other",
+        }
+    }
 }
